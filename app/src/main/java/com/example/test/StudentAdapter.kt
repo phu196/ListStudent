@@ -9,8 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 
 class StudentAdapter(
     private val students: MutableList<Student>,
-    private val onDelete: (Int) -> Unit
+    private val onItemClick: (Int) -> Unit
 ) : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
+
+    inner class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvName: TextView = itemView.findViewById(R.id.tvName)
+        val tvMSSV: TextView = itemView.findViewById(R.id.tvMSSV)
+        val btnDelete: Button = itemView.findViewById(R.id.btnDelete)
+
+        init {
+            btnDelete.setOnClickListener {
+                onItemClick(adapterPosition)
+            }
+        }
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_student, parent, false)
@@ -21,14 +34,7 @@ class StudentAdapter(
         val student = students[position]
         holder.tvName.text = student.name
         holder.tvMSSV.text = student.mssv
-        holder.btnDelete.setOnClickListener { onDelete(position) }
     }
 
     override fun getItemCount(): Int = students.size
-
-    class StudentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvName: TextView = view.findViewById(R.id.tvName)
-        val tvMSSV: TextView = view.findViewById(R.id.tvMSSV)
-        val btnDelete: Button = view.findViewById(R.id.btnDelete)
-    }
 }
